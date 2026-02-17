@@ -84,6 +84,7 @@ solve(a == L, u_solution, bcs=bcs, solver_parameters={'ksp_type': 'cg', 'pc_type
 u_coarse_to_fine = Function(V)
 u_coarse_to_fine.interpolate(u_solution_coarse)
 
+
 # Compute the error between the numerical and analytical solutions
 error_L2 = errornorm(u_analytical, u_solution, norm_type='L2')
 print(f"L2 Error: {error_L2}")
@@ -93,7 +94,7 @@ fig, axes = plt.subplots(2, 2, figsize=(11, 8))
 contours1 = tricontourf(u_solution, axes=axes[0][0], levels=100, cmap="viridis")
 axes[0][0].set_title("Numerical Solution Multigrid")
 fig.colorbar(contours1, ax=axes[0][0])
-contours2 = tricontourf(u_solution_coarse, axes=axes[1][0], levels=100, cmap="viridis")
+contours2 = tricontourf(u_coarse_to_fine, axes=axes[1][0], levels=100, cmap="viridis")
 axes[1][0].set_title("Numerical Solution Coarse Interpolated")
 fig.colorbar(contours2, ax=axes[1][0])
 contours3 = tricontourf(u_analytical, axes=axes[0][1], levels=100, cmap="viridis")
