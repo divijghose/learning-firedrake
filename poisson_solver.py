@@ -16,10 +16,10 @@ Date: November 2025
 """
 from firedrake import *
 import matplotlib.pyplot as plt
-from firedrake.pyplot import tricontour
+# from firedrake.pyplot import tricontour
 
 # Define constant parameters
-omega = 16 * pi # Frequency for the manufactured solution
+omega = 2 * pi # Frequency for the manufactured solution
 num_cells = 100 # Number of cells in each direction for the mesh
 checkpointing = False # Checkpointing flag
 # Create a unit square mesh
@@ -61,18 +61,21 @@ solve(a == L, u_solution, bcs=bcs, solver_parameters={'ksp_type': 'cg', 'pc_type
 error_L2 = errornorm(u_analytical, u_solution, norm_type='L2')
 print(f"L2 Error: {error_L2}")
 
-# Plot the numerical solution, the analytical solution, and the point-wise absolute error in one figure
+# # Plot the numerical solution, the analytical solution, and the point-wise absolute error in one figure
 fig, axes = plt.subplots(1, 3, figsize=(11, 4))
 contours1 = tricontourf(u_solution, axes=axes[0], levels=100, cmap="viridis")
 axes[0].set_title("Numerical Solution")
-fig.colorbar(contours1, ax=axes[0])
+axes[0].set_aspect('equal')
+fig.colorbar(contours1, ax=axes[0], shrink=0.625)
 contours2 = tricontourf(u_analytical, axes=axes[1], levels=100, cmap="viridis")
 axes[1].set_title("Analytical Solution")
-fig.colorbar(contours2, ax=axes[1])
+axes[1].set_aspect('equal')
+fig.colorbar(contours2, ax=axes[1], shrink=0.625)
 error_function = Function(V)
 error_function.interpolate(abs(u_analytical - u_solution))
 contours3 = tricontourf(error_function, axes=axes[2], levels=100, cmap="viridis")
 axes[2].set_title("Point-wise Absolute Error")
-fig.colorbar(contours3, ax=axes[2])
+axes[2].set_aspect('equal')
+fig.colorbar(contours3, ax=axes[2], shrink=0.625)
 plt.tight_layout()
 plt.savefig("poisson_solution.png")
